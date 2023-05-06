@@ -13,14 +13,17 @@ export const getRestaurantes = async (req, res) => {
 export const getRestaurante = async (req, res) => {
   try {
     const { id } = req.params;
-
+    /**
+     * ? Usar findOne o findByPk?
+     */
     const restaurante = await Restaurante.findOne({
       where: {
         id,
       },
     });
-    
-    if (!restaurante) return res.status(404).json({message: 'Restaurante no existe'})
+
+    if (!restaurante)
+      return res.status(404).json({ message: "Restaurante no existe" });
 
     res.json(restaurante);
   } catch (error) {
