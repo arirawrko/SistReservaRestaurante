@@ -5,7 +5,7 @@ import mesaRoutes from './routes/mesa.routes.js';
 
 const app = express()
 
-//middelwares para manejar peticiones una vez que pasen por la direccion
+//middelwares para manejar peticiones una vez que pasen por la dirección
 
 app.use(express.json())
 
