@@ -1,3 +1,4 @@
+import { Mesa } from "../models/mesa.js";
 import { Restaurante } from "../models/restaurante.js";
 
 export const getRestaurantes = async (req, res) => {
@@ -31,6 +32,16 @@ export const getRestaurante = async (req, res) => {
   }
 };
 
+export const getRestauranteMesas = async (req, res) => {
+  const {id} = req.params
+
+  const mesas = await Mesa.findAll({
+    where: {restauranteId: id}
+  })
+
+  res.json(mesas)
+}
+
 export const createRestaurante = async (req, res) => {
   const { nombre, direccion } = req.body;
 
@@ -53,6 +64,9 @@ export const updateRestaurante = async (req, res) => {
     const { id } = req.params;
     const { nombre, direccion } = req.body;
 
+    /**
+     * TODO: validar que se encuentre primero el restaurante o dejar que solo el try-catch se encargue
+     */
     const restaurante = await Restaurante.findByPk(id);
     restaurante.nombre = nombre;
     restaurante.direccion = direccion;
