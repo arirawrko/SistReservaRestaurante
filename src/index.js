@@ -1,10 +1,12 @@
-//encargado de arrancar la aplicación
+//* encargado de arrancar la aplicación
+
 import app from "./app.js";
 import { sequelize } from "./database/database.js";
 
 async function main() {
   try {
-    await sequelize.sync({ force: false });
+    // sincroniza todos los modelos
+    await sequelize.sync({ force: false });   // sincroniza con la BD y crear la tabla sin borrar la que ya existía
     console.log("Connection has been established successfully.");
     app.listen(4000);
     console.log("Servidor corriendo en el puerto", 4000);

@@ -1,8 +1,12 @@
+//* definir las tablas que se van a crear en la base de datos
+
 import { DataTypes, Sequelize } from "sequelize";
 import { sequelize } from "../database/database.js";
 
 export const Mesa = sequelize.define(
   "mesa",
+  // Aquí se definen los atributos del modelo
+  //TODO: agregar notNull a los atributos que hagan falta
   {
     id: {
       type: DataTypes.INTEGER,
@@ -27,7 +31,7 @@ export const Mesa = sequelize.define(
     },
     reservado: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      defaultValue: false,  //! como no acepta TRUE en el POST, manejar mejor o dejar de usar
     },
   },
   {

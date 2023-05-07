@@ -2,6 +2,7 @@ import { Router } from "express";
 import {getRestaurantes, getRestaurante, createRestaurante, updateRestaurante, deleteRestaurante, getRestauranteMesas} from '../controllers/restauranteDAO.controller.js';
 const router = Router();
 
+// rutas
 router.get("/restaurante", getRestaurantes);
 router.get("/restaurante/:id", getRestaurante);
 router.get("/restaurante/:id/mesas", getRestauranteMesas);

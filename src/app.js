@@ -1,15 +1,16 @@
-//va a tener la configuración de express
-import express from 'express';
-import restauranteRoutes from './routes/restaurante.routes.js';
-import mesaRoutes from './routes/mesa.routes.js';
+//* archivo que contine la configuración de express
 
-const app = express()
+import express from "express";
+import restauranteRoutes from "./routes/restaurante.routes.js";
+import mesaRoutes from "./routes/mesa.routes.js";
 
-//middelwares para manejar peticiones una vez que pasen por la dirección
+const app = express();
 
-app.use(express.json())
+// middelwares para manejar peticiones una vez que pasen por la dirección
 
-app.use(restauranteRoutes)
-app.use(mesaRoutes)
+app.use(express.json());
+
+app.use(restauranteRoutes);
+app.use(mesaRoutes);
 
 export default app;

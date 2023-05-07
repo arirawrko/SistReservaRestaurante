@@ -1,6 +1,9 @@
+//* funciones que se van a ejecutar cuando se llegue a las restaurante
+
 import { Mesa } from "../models/mesa.js";
 import { Restaurante } from "../models/restaurante.js";
 
+// función para el get: obtener todos los restaurantes
 export const getRestaurantes = async (req, res) => {
   try {
     const restaurantes = await Restaurante.findAll();
@@ -11,6 +14,7 @@ export const getRestaurantes = async (req, res) => {
   }
 };
 
+// función para el get: obtener un restaurante
 export const getRestaurante = async (req, res) => {
   try {
     const { id } = req.params;
@@ -32,16 +36,18 @@ export const getRestaurante = async (req, res) => {
   }
 };
 
+// función para el get: obtener todas las mesas por restaurante
 export const getRestauranteMesas = async (req, res) => {
-  const {id} = req.params
+  const { id } = req.params;
 
   const mesas = await Mesa.findAll({
-    where: {restauranteId: id}
-  })
+    where: { restauranteId: id },
+  });
 
-  res.json(mesas)
-}
+  res.json(mesas);
+};
 
+// función para el post: crear un restaurante
 export const createRestaurante = async (req, res) => {
   const { nombre, direccion } = req.body;
 
@@ -59,6 +65,7 @@ export const createRestaurante = async (req, res) => {
   }
 };
 
+// función para el update de un restaurante
 export const updateRestaurante = async (req, res) => {
   try {
     const { id } = req.params;
@@ -80,8 +87,10 @@ export const updateRestaurante = async (req, res) => {
   }
 };
 
+// función para el delete de un restaurante
 export const deleteRestaurante = async (req, res) => {
   try {
+    //! falta validar que exista primero el restaurante a eliminar, retorna 204 aunque no exista el id
     const { id } = req.params;
     await Restaurante.destroy({
       where: {
