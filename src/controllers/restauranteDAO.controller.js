@@ -68,20 +68,21 @@ export const createRestaurante = async (req, res) => {
 // función para el update de un restaurante
 export const updateRestaurante = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { nombre, direccion } = req.body;
+    const { id } = req.params; // recuperar el id
+    const { nombre, direccion } = req.body; // recuperar  los parámetros del cliente para insertar en la BD
 
     /**
      * TODO: validar que se encuentre primero el restaurante o dejar que solo el try-catch se encargue
      */
-    const restaurante = await Restaurante.findByPk(id);
+    const restaurante = await Restaurante.findByPk(id); // consulta a la BD para buscar por id
     restaurante.nombre = nombre;
     restaurante.direccion = direccion;
 
+    // guardar en la bd
     await restaurante.save();
-    console.log(restaurante);
+    console.log(restaurante); // imprimmir por consola los datos nuevos
 
-    res.json(restaurante);
+    res.json(restaurante); // enviar al cliente loos datos actualizados
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

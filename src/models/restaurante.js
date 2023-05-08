@@ -3,6 +3,7 @@
 import { DataTypes, DatabaseError } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { Mesa } from "./mesa.js";
+import { Reserva } from "./reserva.js";
 
 //Sequelize es el que crea y diseñar las relaciones en la BD
 
@@ -32,6 +33,7 @@ export const Restaurante = sequelize.define(
   }
 );
 
+//* relaciones
 // un restaurante puede tener muchas mesas
 Restaurante.hasMany(Mesa, {
   foreingKey: "restauranteId",
@@ -41,5 +43,17 @@ Restaurante.hasMany(Mesa, {
 // una mesa puede pertenecer a un solo restaurante
 Mesa.belongsTo(Restaurante, {
   foreingKey: "restauranteId",
+  targetId: "id",
+});
+
+// un restaurante puede tener muchas reservas
+Restaurante.hasMany(Reserva, {
+  foreingKey: "restaurante_id", // probando con sneake_case
+  sourceKey: "id",
+});
+
+// una reserva puede pertenecer a un solo restaurante
+Reserva.belongsTo(Restaurante, {
+  foreingKey: "restaurante_id",
   targetId: "id",
 });
