@@ -19,7 +19,7 @@ export const Reserva = sequelize.define(
     },
     cantidadPersonas: {
       type: DataTypes.INTEGER,
-      field: "field_with_underscores",
+      field: "cantidad_personas",
     },
   },
   {

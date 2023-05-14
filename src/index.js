@@ -6,7 +6,7 @@ import { sequelize } from "./database/database.js";
 async function main() {
   try {
     // sincroniza todos los modelos
-    await sequelize.sync({ force: false });   // sincroniza con la BD y crear la tabla sin borrar la que ya existía
+    await sequelize.sync({ force: true });   // sincroniza con la BD y crear la tabla sin borrar la bue ya existía
     console.log("Connection has been established successfully.");
     app.listen(4000);
     console.log("Servidor corriendo en el puerto", 4000);
