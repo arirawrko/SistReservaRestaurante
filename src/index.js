@@ -2,15 +2,14 @@
 
 import app from "./app.js";
 import { sequelize } from "./database/database.js";
-// import {fileURLToPath} from 'url';
-// import {dirname} from 'path';
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
+import {fileURLToPath} from 'url';
+import {dirname} from 'path';
 
-// app.get('/', (req, res) => {
-  // res.sendFile(__dirname + "/public/index.html");
-// });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+
 
 async function main() {
   try {
@@ -19,6 +18,21 @@ async function main() {
     console.log("Connection has been established successfully.");
     app.listen(4000);
     console.log("Servidor corriendo en el puerto", 4000);
+
+
+    /* Para rederizar el index */
+    app.set("view engine", "ejs");
+    app.set("views", __dirname + "/views");
+
+    app.get('/', (req, res) => {
+      res.render("index");
+    });    
+
+    app.get('/reserva', (req, res) => {
+      res.render("reserva");
+     });    
+
+
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
