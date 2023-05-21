@@ -11,6 +11,21 @@ export const getClientes = async (req, res) => {
   }
 };
 
+export const getClienteByCI = async (req, res) => {
+  try {
+    const { cedula } = req.params; // recuperar el id de cliente
+    const cliente = await Cliente.findOne({where: {'cedula': cedula}}); // buscar por primaryKey
+
+    if (!cliente)
+      return res.json({ cedula:"NoExiste" ,message: "Cliente no existe!" });
+
+    res.json(cliente); // enviar al cliente
+    console.log(cliente);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const getCliente = async (req, res) => {
   try {
     const { id } = req.params; // recuperar el id de cliente
