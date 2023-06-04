@@ -41,10 +41,7 @@ Restaurante.hasMany(Mesa, {
 });
 
 // una mesa puede pertenecer a un solo restaurante
-Mesa.belongsTo(Restaurante, {
-  foreingKey: "restauranteId",
-  targetId: "id",
-});
+Mesa.belongsTo(Restaurante);
 
 // un restaurante puede tener muchas reservas
 Restaurante.hasMany(Reserva, {

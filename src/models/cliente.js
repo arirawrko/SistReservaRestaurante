@@ -27,9 +27,6 @@ export const Cliente = sequelize.define(
     },
   },
   {
-    freezeTableName: true,
-  },
-  {
     timestamps: false,
   }
 );
@@ -38,12 +35,10 @@ export const Cliente = sequelize.define(
 
 // un cliente puede tener varias reservas
 Cliente.hasMany(Reserva, {
-  foreignKey: "reserva_id", //probando en sneake_case
-  sourceKey: "id",
+  foreignKey: {
+    allowNull: false
+  }
 });
 
 // una reserva puede pertenecer a un solo cliente
-Reserva.belongsTo(Cliente, {
-  foreignKey: "reserva_id",
-  targetId: "id",
-});
+Reserva.belongsTo(Cliente);

@@ -2,7 +2,9 @@
 
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-
+import { Hora } from "./hora.js";
+import { ReservaDetalle } from "./reservaDetalle.js";
+// import { Mesa } from './mesa.js';
 export const Reserva = sequelize.define(
   "reserva",
   {
@@ -14,13 +16,14 @@ export const Reserva = sequelize.define(
     fecha: {
       type: DataTypes.DATEONLY,
     },
-    hora: {
-      type: DataTypes.DATE,
-    },
     cantidadPersonas: {
       type: DataTypes.INTEGER,
       field: "cantidad_personas",
     },
+    /*     id_mesa: {
+      type: DataTypes.INTEGER,
+      foreignKey: true
+    } */
   },
   {
     freezeTableName: true,
@@ -29,3 +32,14 @@ export const Reserva = sequelize.define(
     timestamps: false,
   }
 );
+
+// relaciones
+
+// rel. reserva y mesa
+
+Reserva.hasMany(ReservaDetalle, {
+  foreign_key: "id_reserva",
+  sourceKey: "id",
+});
+
+ReservaDetalle.belongsTo(Reserva);

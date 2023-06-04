@@ -4,6 +4,8 @@ import express from "express";
 import restauranteRoutes from "./routes/restaurante.routes.js";
 import mesaRoutes from "./routes/mesa.routes.js";
 import clienteRoutes from './routes/cliente.routes.js';
+import horaRoutes from './routes/hora.routes.js';
+import reservaRoutes from './routes/reserva.routes.js';
 import cors from 'cors';
 
 const app = express();
@@ -15,6 +17,9 @@ app.use(express.json());    //cada vez que se envía un dato en formato json el 
 app.use(restauranteRoutes);
 app.use(mesaRoutes);
 app.use(clienteRoutes)
+app.use(horaRoutes)
+app.use(reservaRoutes)
+
 app.use(cors())
 
 export default app;
