@@ -3,6 +3,7 @@
 import { DataTypes, Sequelize } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { Reserva } from "./reserva.js";
+import { ReservaDetalle } from "./reservaDetalle.js";
 
 export const Mesa = sequelize.define(
   "mesa",
@@ -30,10 +31,6 @@ export const Mesa = sequelize.define(
     capacidad: {
       type: DataTypes.INTEGER,
     },
-    reservado: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false, //! como no acepta TRUE en el POST, manejar mejor o dejar de usar
-    },
   },
   {
     timestamps: false,
@@ -42,14 +39,16 @@ export const Mesa = sequelize.define(
 
 //* relaciones
 
-// una mesa puede tener muchas reservas
-Mesa.hasMany(Reserva, {
-  foreingKey: "mesa_id", // probando con sneake_case
-  sourceKey: "id",
-});
+// una mesa puede tener una Reserva
 
-// una reserva puede pertenecer a una sola mesa
-Reserva.belongsTo(Mesa, {
-  foreingKey: "mesa_id",
-  targetId: "id",
+Mesa.hasOne(Reserva, {
+  foreignKey: {
+    allowNull: false,
+  },
+  onDelete: "RESTRICT",
 });
+Reserva.belongsTo(Mesa);
+
+// una reserva  puede tener muchas reservaDetalle
+
+Reserva.hasMany(ReservaDetalle, {});
