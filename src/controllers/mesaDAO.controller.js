@@ -53,9 +53,27 @@ export const getMesa = async (req, res) => {
 
     // si no encuentra la mesa, retorna un mensaje de error
 
-    if (!mesa) return res.status(404).json({ message: "Mesa no existe!" });
+    if (!mesa) return res.status(200).json({ id: 0, message: "Mesa no existe!" });
 
     res.json(mesa);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMesaByRestaurante = async (req, res) => {
+  try {
+    // extraer el id de restaurante en el request
+
+    const { id } = req.params;
+    // buscar en el BD por id.
+    const mesas = await Mesa.findAll({where: {'restauranteId': parseInt(id)}});
+
+    // si no encuentra la mesa, retorna un mensaje de error
+
+    if (!mesas) return res.status(200).json([{ id: 0, message: "Mesa no existe!" }]);
+
+    res.json(mesas);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
