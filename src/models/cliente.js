@@ -13,6 +13,9 @@ export const Cliente = sequelize.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true, //? definir si usar autoIncrement para todos los PK
+      get() {
+        return this.getDataValue("id");
+      },
     },
     cedula: {
       type: DataTypes.INTEGER,
@@ -36,8 +39,8 @@ export const Cliente = sequelize.define(
 // un cliente puede tener varias reservas
 Cliente.hasMany(Reserva, {
   foreignKey: {
-    allowNull: false
-  }
+    allowNull: false,
+  },
 });
 
 // una reserva puede pertenecer a un solo cliente

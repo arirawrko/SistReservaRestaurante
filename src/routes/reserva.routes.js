@@ -11,6 +11,6 @@ const router = Router();
 //rutas
 
 router.get("/reserva/:id", getReservaByID);
-router.post("/reserva/", createReserva);
+router.post("/reserva", createReserva);
 
 export default router;

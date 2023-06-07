@@ -3,6 +3,7 @@
 import { Reserva } from "../models/reserva.js";
 import { ReservaDetalle } from "../models/reservaDetalle.js";
 import { Hora } from "../models/hora.js";
+import { Cliente } from "../models/cliente.js";
 
 /* export const createReserva = async (req, res) => {
   const {
@@ -57,22 +58,85 @@ import { Hora } from "../models/hora.js";
 }; */
 
 export const createReserva = async (req, res) => {
-  const {
-    fecha,
-    cantidadPersonas,
-    cliente_id,
-    mesaId,
-    restautanteId,
-    horario,
-  } = req.body;
+  try {
+    const {
+      // data
+      restauranteId,
+      mesaId,
+      cantidad_personas,
+      fecha,
+      horario,
 
-/*   try {
-    const { reserva } = 
+      // cliente
+
+      cedula,
+      nombre,
+      apellido,
+    } = req.body;
+    console.log(req.body);
+
+    // verificar si existe el cliente con su cedula
+
+    let consultaCliente = await Cliente.findOne({
+      where: {
+        cedula: cedula,
+      },
+    });
+    console.log(consultaCliente.getDataValue("id"));
+
+    if (!consultaCliente) {
+      newCliente = await Cliente.create({
+        cedula,
+        nombre,
+        apellido,
+      });
+      consultaCliente = await Cliente.findOne({
+        where: {
+          cedula: cedula,
+        },
+      });
+      // persistir reserva
+    }
+    let id = consultaCliente.getDataValue("id");
+    let newReserva = await Reserva.create({
+      restauranteId: restauranteId,
+      cantidadPersonas: cantidad_personas,
+      fecha: fecha,
+      clienteId: id,
+      mesaId: mesaId,
+    });
+    // persistir reserva ReservaDetalle
+    // rescatar primero el id de reserva
+    const id_reserva = newReserva.getDataValue("id");
+    console.log("Id reserva", id_reserva);
+    var datos = [];
+/*     let reservaDetalle = await horario.forEach(async (element) => {
+      let newReservaDetalle = await ReservaDetalle.create({
+        reservaId: id_reserva,
+        horaId: element,
+      });
+      console.log("Reserva Detalle: " + id_reserva + "- " + element);
+      datos.push(newReservaDetalle);
+    }); */
+    let reservaDetalle = await Promise.all(horario.map(async (element) => {
+      let newReservaDetalle = await ReservaDetalle.create({
+        reservaId: id_reserva,
+        horaId: element,
+      });
+      console.log("Reserva Detalle: " + id_reserva + "- " + element);
+      return newReservaDetalle;
+    }));
+    console.log(reservaDetalle)
+    const data = {
+      reserva: newReserva,
+      reservaDetalleMas: reservaDetalle,
+    };
+    console.log("terminando proceso")
+    res.json(data);
   } catch (error) {
     return res.status(400).json({ message: error.message });
-  } */
+  }
 };
-
 export const getReservaByID = async (req, res) => {
   try {
     const { id } = req.params;

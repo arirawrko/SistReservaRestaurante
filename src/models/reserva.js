@@ -12,6 +12,9 @@ export const Reserva = sequelize.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      get() {
+        return this.getDataValue("id");
+      },
     },
     fecha: {
       type: DataTypes.DATEONLY,
