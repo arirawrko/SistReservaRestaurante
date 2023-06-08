@@ -4,6 +4,7 @@ import { Reserva } from "../models/reserva.js";
 import { ReservaDetalle } from "../models/reservaDetalle.js";
 import { Hora } from "../models/hora.js";
 import { Cliente } from "../models/cliente.js";
+import { Restaurante } from "../models/restaurante.js";
 
 /* export const createReserva = async (req, res) => {
   const {
@@ -110,7 +111,7 @@ export const createReserva = async (req, res) => {
     const id_reserva = newReserva.getDataValue("id");
     console.log("Id reserva", id_reserva);
     var datos = [];
-/*     let reservaDetalle = await horario.forEach(async (element) => {
+    /*     let reservaDetalle = await horario.forEach(async (element) => {
       let newReservaDetalle = await ReservaDetalle.create({
         reservaId: id_reserva,
         horaId: element,
@@ -118,20 +119,22 @@ export const createReserva = async (req, res) => {
       console.log("Reserva Detalle: " + id_reserva + "- " + element);
       datos.push(newReservaDetalle);
     }); */
-    let reservaDetalle = await Promise.all(horario.map(async (element) => {
-      let newReservaDetalle = await ReservaDetalle.create({
-        reservaId: id_reserva,
-        horaId: element,
-      });
-      console.log("Reserva Detalle: " + id_reserva + "- " + element);
-      return newReservaDetalle;
-    }));
-    console.log(reservaDetalle)
+    let reservaDetalle = await Promise.all(
+      horario.map(async (element) => {
+        let newReservaDetalle = await ReservaDetalle.create({
+          reservaId: id_reserva,
+          horaId: element,
+        });
+        console.log("Reserva Detalle: " + id_reserva + "- " + element);
+        return newReservaDetalle;
+      })
+    );
+    console.log(reservaDetalle);
     const data = {
       reserva: newReserva,
       reservaDetalleMas: reservaDetalle,
     };
-    console.log("terminando proceso")
+    console.log("terminando proceso");
     res.json(data);
   } catch (error) {
     return res.status(400).json({ message: error.message });
@@ -149,10 +152,36 @@ export const getReservaByID = async (req, res) => {
       },
     });
 
-    if (!reserva)
-      return res.status(404).json({ message: "Restaurante no existe" });
+    if (!reserva) return res.status(404).json({ message: "Reserva no existe" });
 
     res.json(reserva);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getReserva = async (req, res) => {
+  try {
+    // direccion: http://localhost:4000/buscar/reserva/:id1/:id2
+    const { id1, id2 } = req.params;
+    if (id1 === "restaurante") {
+      const reservas = await Reserva.findAll({
+        where: { restauranteId: id2 },
+      });
+      res.json(reservas);
+    } else if (id1 === "fecha") {
+      const reservas = await Reserva.findAll({
+        where: { fecha: id2 },
+        order: [["fecha", "ASC"]],
+      });
+      res.json(reservas);
+    } else if (id1 === "cliente") {
+      const reservas = await Reserva.findAll({
+        where: { clienteId: id2 },
+        order: [["fecha", "ASC"]],
+      });
+      res.json(reservas)
+    }
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
