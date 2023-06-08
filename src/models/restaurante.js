@@ -42,8 +42,10 @@ export const Restaurante = sequelize.define(
 //* relaciones
 // un restaurante puede tener muchas mesas
 Restaurante.hasMany(Mesa, {
-  foreingKey: "restauranteId",
-  sourceKey: "id",
+  foreignKey: {
+    allowNull: false,
+  },
+  onDelete: "RESTRICT",
 });
 
 // una mesa puede pertenecer a un solo restaurante
@@ -51,12 +53,11 @@ Mesa.belongsTo(Restaurante);
 
 // un restaurante puede tener muchas reservas
 Restaurante.hasMany(Reserva, {
-  foreingKey: "restaurante_id", // probando con sneake_case
-  sourceKey: "id",
+  foreignKey: {
+    allowNull: false,
+  },
+  onDelete: "RESTRICT",
 });
 
 // una reserva puede pertenecer a un solo restaurante
-Reserva.belongsTo(Restaurante, {
-  foreingKey: "restaurante_id",
-  targetId: "id",
-});
+Reserva.belongsTo(Restaurante);

@@ -1,11 +1,11 @@
+
 //* definir las tablas que van a crear en la base de datos
 
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { ConsumoDetalle } from "./consumoDetalle.js";
 
-export const Producto = sequelize.define(
-  "producto",
+export const DetalleConsumo= sequelize.define(
+  "detelle_consumo",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -15,14 +15,10 @@ export const Producto = sequelize.define(
         return this.getDataValue("id");
       },
     },
-    nombre: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    precioVenta: {
+    cantidad: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      unique: true,
     },
   },
   {
@@ -30,10 +26,4 @@ export const Producto = sequelize.define(
   }
 );
 
-
-Producto.hasMany(ConsumoDetalle, {
-  foreignKey: {
-    allowNull: false,
-  },
-  onDelete: 'RESTRICT'
-});
+//* relaciones

@@ -18,10 +18,12 @@ export const Reserva = sequelize.define(
     },
     fecha: {
       type: DataTypes.DATEONLY,
+      allowNull: false,
     },
     cantidadPersonas: {
       type: DataTypes.INTEGER,
-      field: "cantidad_personas",
+      field: "cantidad_personaos",
+      allowNull: false
     },
     /*     id_mesa: {
       type: DataTypes.INTEGER,
@@ -41,8 +43,10 @@ export const Reserva = sequelize.define(
 // rel. reserva y mesa
 
 Reserva.hasMany(ReservaDetalle, {
-  foreign_key: "id_reserva",
-  sourceKey: "id",
+  foreignKey: {
+    allowNull: false,
+  },
+  onDelete: "RESTRICT",
 });
 
 ReservaDetalle.belongsTo(Reserva);

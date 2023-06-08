@@ -30,9 +30,11 @@ export const Categoria = sequelize.define(
 
 // muchos productos pueden pertenecer a una categoría
 Categoria.hasMany(Producto, {
-  foreignKey: "id_categoria",
-  sourceKey: "id"
+  foreignKey: {
+    allowNull: false,
+  },
+  onDelete: "RESTRICT",
 });
 
-// un producto pertenece a una sola categoría 
+// un producto pertenece a una sola categoría
 Producto.belongsTo(Categoria);

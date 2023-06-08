@@ -3,6 +3,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { Reserva } from "./reserva.js";
+import { Consumo } from "./consumo.js";
 
 export const Cliente = sequelize.define(
   "cliente",
@@ -41,7 +42,17 @@ Cliente.hasMany(Reserva, {
   foreignKey: {
     allowNull: false,
   },
+  onDelete: "RESTRICT",
 });
 
 // una reserva puede pertenecer a un solo cliente
 Reserva.belongsTo(Cliente);
+
+Cliente.hasMany(Consumo, {
+  foreignKey: {
+    allowNull: false,
+  },
+});
+
+// una reserva puede pertenecer a un solo cliente
+Consumo.belongsTo(Cliente);

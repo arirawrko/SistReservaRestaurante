@@ -32,7 +32,9 @@ export const Hora = sequelize.define(
 
 // reservadetalle tiene un horario
 Hora.hasOne(ReservaDetalle, {
-  // foreignKey: "id_hora",
+  foreignKey: {
+    allowNull: false,
+  },
   onDelete: "RESTRICT",
 });
 
