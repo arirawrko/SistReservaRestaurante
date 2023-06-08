@@ -11,9 +11,15 @@ export const Hora = sequelize.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true, //? definir si usar autoIncrement para todos los PK
+      get(){
+        return this.getDataValue("id");
+      }
     },
     horario: {
       type: DataTypes.STRING,
+      get(){
+        return this.getDataValue("horario");
+      }
     },
   },
   {

@@ -17,9 +17,15 @@ export const Restaurante = sequelize.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true, //? definir si usar autoIncrement para todos los PK
+      get(){
+        return this.getDataValue("id");
+      }
     },
     nombre: {
       type: DataTypes.STRING,
+      get(){
+        return this.getDataValue("nombre");
+      }
     },
     direccion: {
       type: DataTypes.STRING,
