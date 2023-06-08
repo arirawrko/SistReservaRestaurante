@@ -4,6 +4,7 @@ import { DataTypes, Sequelize } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { Reserva } from "./reserva.js";
 import { ReservaDetalle } from "./reservaDetalle.js";
+import { Consumo } from "./consumo.js";
 
 export const Mesa = sequelize.define(
   "mesa",
@@ -51,4 +52,17 @@ Reserva.belongsTo(Mesa);
 
 // una reserva  puede tener muchas reservaDetalle
 
-Reserva.hasMany(ReservaDetalle, {});
+Reserva.hasMany(ReservaDetalle, {
+  foreignKey: {
+    allowNull: false,
+  },
+  onDelete: "RESTRICT",
+});
+
+Mesa.hasMany(Consumo, {
+  foreignKey: {
+    allowNull: false,
+  },
+  onDelete: "RESTRICT",
+});
+Consumo.belongsTo(Mesa);

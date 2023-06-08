@@ -30,10 +30,9 @@ export const Producto = sequelize.define(
   }
 );
 
-
 Producto.hasMany(ConsumoDetalle, {
   foreignKey: {
     allowNull: false,
   },
-  onDelete: 'RESTRICT'
+  onDelete: "RESTRICT",
 });
