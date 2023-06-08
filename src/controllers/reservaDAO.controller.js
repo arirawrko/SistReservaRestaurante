@@ -4,6 +4,7 @@ import { Reserva } from "../models/reserva.js";
 import { ReservaDetalle } from "../models/reservaDetalle.js";
 import { Hora } from "../models/hora.js";
 import { Cliente } from "../models/cliente.js";
+import { Mesa } from "../models/mesa.js";
 import { Restaurante } from "../models/restaurante.js";
 
 /* export const createReserva = async (req, res) => {
@@ -172,22 +173,27 @@ export const getReserva = async (req, res) => {
     if (id1 === "restaurante") {
       const reservas = await Reserva.findAll({
         where: { restauranteId: id2 },
+        order: [ ["mesaId", "ASC" ] ],
+        include: [Cliente, Mesa]
       });
       res.json(reservas);
     } else if (id1 === "fecha") {
       const reservas = await Reserva.findAll({
         where: { fecha: id2 },
-        order: [["fecha", "ASC"]],
+        include: [Cliente, Mesa],
+        order: [ ["mesaId", "ASC" ] ],
       });
       res.json(reservas);
     } else if (id1 === "cliente") {
       const reservas = await Reserva.findAll({
         where: { clienteId: id2 },
-        order: [["fecha", "ASC"]],
+        include: [Cliente, Mesa],
+        order: [["mesaId", "ASC"]],
       });
       res.json(reservas)
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 };
