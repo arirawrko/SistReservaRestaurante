@@ -151,7 +151,7 @@
                         }).done(function (data) {
                             console.log(JSON.stringify(data));
                             if(data.status == "Exito"){
-                                window.alert("Reserva Generada: "+data.sms);
+                                window.alert("Reserva Generada: "+data.status);
                             }else{
                                 window.alert("Error: "+data.sms);
                             }
