@@ -6,6 +6,9 @@ import mesaRoutes from "./routes/mesa.routes.js";
 import clienteRoutes from './routes/cliente.routes.js';
 import horaRoutes from './routes/hora.routes.js';
 import reservaRoutes from './routes/reserva.routes.js';
+import categoriaRoutes from './routes/categoria.routes.js';
+import productoRoutes from './routes/producto.routes.js';
+
 import cors from 'cors';
 
 const app = express();
@@ -19,6 +22,8 @@ app.use(mesaRoutes);
 app.use(clienteRoutes)
 app.use(horaRoutes)
 app.use(reservaRoutes)
+app.use(categoriaRoutes)
+app.use(productoRoutes)
 
 app.use(cors())
 
