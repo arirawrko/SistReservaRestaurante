@@ -73,7 +73,7 @@ export const createReserva = async (req, res) => {
       nombre,
       apellido,
     } = req.body;
-    console.log(req.body);
+    //console.log(req.body);
 
     // verificar si existe el cliente con su cedula
 
@@ -82,19 +82,23 @@ export const createReserva = async (req, res) => {
         cedula: cedula,
       },
     });
-    console.log(consultaCliente.getDataValue("id"));
+    //console.log(consultaCliente.getDataValue("id"));
 
     if (!consultaCliente) {
-      newCliente = await Cliente.create({
+      let newCliente = await Cliente.create({
         cedula,
         nombre,
         apellido,
       });
+
+      consultaCliente = newCliente;
+
+      /*
       consultaCliente = await Cliente.findOne({
         where: {
           cedula: cedula,
         },
-      });
+      });*/
       // persistir reserva
     }
     let id = consultaCliente.getDataValue("id");
@@ -128,13 +132,14 @@ export const createReserva = async (req, res) => {
     }));
     console.log(reservaDetalle)
     const data = {
+      status: "Exito",
       reserva: newReserva,
       reservaDetalleMas: reservaDetalle,
     };
     console.log("terminando proceso")
     res.json(data);
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({ status: "NoExito", sms: error.info });
   }
 };
 export const getReservaByID = async (req, res) => {
