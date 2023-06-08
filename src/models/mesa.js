@@ -15,9 +15,15 @@ export const Mesa = sequelize.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      get() {
+        return this.getDataValue("id");
+      },
     },
     nombre: {
       type: DataTypes.STRING,
+      get() {
+        return this.getDataValue("nombre");
+      },
     },
     posicion_x: {
       type: DataTypes.INTEGER,

@@ -25,9 +25,15 @@ export const Cliente = sequelize.define(
     },
     nombre: {
       type: DataTypes.STRING,
+      get() {
+        return this.getDataValue("nombre");
+      },
     },
     apellido: {
       type: DataTypes.STRING,
+      get() {
+        return this.getDataValue("apellido");
+      },
     },
   },
   {
