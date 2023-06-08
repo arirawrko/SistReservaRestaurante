@@ -3,8 +3,12 @@
 import app from "./app.js";
 import { sequelize } from "./database/database.js";
 
+import { Restaurante } from "./models/restaurante.js";
+import { Hora } from "./models/hora.js";
+
 import {fileURLToPath} from 'url';
 import {dirname} from 'path';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,6 +24,7 @@ async function main() {
     console.log("Servidor corriendo en el puerto", 4000);
 
 
+
     /* Para rederizar el index */
     app.set("view engine", "ejs");
     app.set("views", __dirname + "/views");
@@ -28,8 +33,17 @@ async function main() {
       res.render("index");
     });    
 
+    var restaurantes = await Restaurante.findAll();
+    var horarios = await Hora.findAll();
+    
+
     app.get('/reserva', (req, res) => {
-      res.render("reserva");
+      //console.log("-->" + horarios);  
+      res.render("reserva", 
+        {
+          rows_restaurante: restaurantes, 
+          rows_hora: horarios
+        });
      });    
 
 
