@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/f90d3bf50d.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -26,7 +27,7 @@
                                     Crear Reserva
                                 </h4>
                             </div>
-                            <form id="fmrReserva" class="was-validated">
+                            <form id="fmrReserva" class="was-validated" method="post">
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label for="cantidad_personas">Cantidad Personas</label>
@@ -34,18 +35,35 @@
                                             id="cantidad_personas" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="cantidad_personas">Fecha</label>
+                                        <label for="fecha">Fecha</label>
                                         <input type="text" value="" class="form-control" name="fecha" id="fecha">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="">Restaurante</label>
+                                        <label for="restauranId">Restaurante</label>
                                         <select class="form-control" id="restauranId" name="restauranId" required>
+                                            <option value="0">Seleccionar</option>
+                                            <% rows_restaurante.forEach( (row)=> { %>
+                                                <option value="<%=row.id %>">
+                                                    <%=row.nombre %>
+                                                </option>
+                                                <%}) %>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="mesaId">Mesa</label>
                                         <select class="form-control" id="mesaId" name="mesaId" required>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="horario">Horario</label>
+                                        <select class="form-control" id="horario" name="horario" required multiple>
+                                            <option value="0">Seleccionar</option>
+                                            <% rows_hora.forEach( (hora)=> { %>
+                                                <option value="<%=hora.id %>">
+                                                    <%=hora.horario %>
+                                                </option>
+                                                <%}) %>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -62,7 +80,7 @@
                                             required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="nombre">Apellido</label>
+                                        <label for="apellido">Apellido</label>
                                         <input type="text" value="" class="form-control" name="apellido" id="apellido"
                                             required>
                                     </div>
@@ -93,67 +111,88 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
                 crossorigin="anonymous"></script>
-
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
             <script>
                 $(document).ready(function () {
-                    console.log("Hola Mundo");
-                    //c.datepicker("option", "dateFormat", "yy-mm-dd");
-                    $("#fecha").datepicker({
-                        dateFormat: "yy-mm-dd"
+                    $("#btnCrearReserva").on("click", function (event) {
+                        event.preventDefault();
+
+                        var cant_personas = $("#cantidad_personas").val();
+                        var f_fecha           = $("#fecha").val();
+                        var restauran_id      = $("#restauranId").val();
+                        var mesa_id           = $("#mesaId").val();
+                        var hora              = $("#horario").val();
+                        var ci                = $("#cedula").val();
+                        var nombre            = $("#nombre").val();
+                        var apellido          = $("#apellido").val();
+
+                        var data = 
+                        {                            
+                            restauranteId: restauran_id,
+                            mesaId: mesa_id,
+                            cantidad_personas: cant_personas,
+                            fecha:  f_fecha,
+                            horario: hora,                           
+                            cedula: ci,
+                            nombre: nombre,
+                            apellido: apellido
+                        };
+
+                        dataToSend = JSON.stringify(data);
+                        console.log(dataToSend);
+
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=UTF-8",
+                            url: "./reserva",
+                            data: dataToSend,
+                            dataType: "json"
+                        }).done(function (data) {
+                            console.log(JSON.stringify(data));
+                            if(data.status == "Exito"){
+                                window.alert("Reserva Generada: "+data.sms);
+                            }else{
+                                window.alert("Error: "+data.sms);
+                            }
+                        });
+
                     });
 
-                    $.ajax(
-                        {
-                            type: 'GET',
-                            dataType: 'json',
-                            url: "http://localhost:4000/restaurante/",
-                            success: function (data) {
 
-                                var rowhtml = "<option value='0'>Seleccionar</option>";
-                                data.forEach(
-                                    function (row, index) {
-                                    rowhtml += "<option value='" + row.id + "'>" + row.nombre + "</option>";
-                                        
+                    console.log("Hola Mundo");
+                    //c.datepicker("option", "dateFormat", "yy-mm-dd");
+                    $("#fecha").datepicker({ dateFormat: "yy-mm-dd" });
+                    $("#horario").select2({ width: 'resolve' });
 
-                                    }
-                                );
-                                console.log("--> " + JSON.stringify(data) + " <--");
-                                console.log("--> " + rowhtml + " <--");
-                                $("#restauranId").html(rowhtml);
-                                $("#cantidad_personas").focus();
-                            }
-                        }
-                    );
-
-                    $("#restauranId").on("change", function(){
+                    $("#restauranId").on("change", function () {
 
                         let idRest = $("#restauranId").val();
-                        console.log("X: "+idRest);
+                        console.log("X: " + idRest);
 
 
                         $.ajax(
-                        {
-                            type: 'GET',
-                            dataType: 'json',
-                            url: "http://localhost:4000/mesa/restaurante/"+idRest,
-                            success: function (data) {
+                            {
+                                type: 'GET',
+                                dataType: 'json',
+                                url: "http://localhost:4000/mesa/restaurante/" + idRest,
+                                success: function (data) {
 
-                                var rowhtml = "";
-                                data.forEach(
-                                    function (row, index) {
-                                        rowhtml += "<option value'" + row.id + "'>" + row.nombre + 
-                                            " | Capacidad: "+row.capacidad+" | Planta: "+row.planta+"</option>";
-                                        console.log("#" + (index + 1) + " --> " + JSON.stringify(row) + " <--");
+                                    var rowhtml = "";
+                                    data.forEach(
+                                        function (row, index) {
+                                            rowhtml += "<option value='" + row.id + "'>" + row.nombre +
+                                                " | Capacidad: " + row.capacidad + " | Planta: " + row.planta + "</option>";
+                                            //console.log("#" + (index + 1) + " --> " + JSON.stringify(row) + " <--");
 
-                                    }
-                                );
-                                $("#mesaId").html(rowhtml);
-                                
+                                        }
+                                    );
+                                    $("#mesaId").html(rowhtml);
+
+                                }
                             }
-                        }
-                    );
-                    });    
+                        );
+                    });
 
                     $("#cedula").on("change", function () {
                         let cedula = $(this).val();
