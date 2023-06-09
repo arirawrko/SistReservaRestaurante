@@ -27,13 +27,13 @@ export const getProducto = async (req, res) => {
   }
 };
 export const createProducto = async (req, res) => {
-  const { nombre, precioVenta, id_categoria } = req.body;
+  const { nombre, precioVenta, categoriumId} = req.body;
 
   try {
     const newProducto = await Producto.create({
       nombre,
       precioVenta,
-      id_categoria,
+      categoriumId,
     });
 
     console.log(newProducto);

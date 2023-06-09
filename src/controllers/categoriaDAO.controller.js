@@ -1,13 +1,13 @@
 //* funciones que se van a ejecutar cuando se llegue a las categorías
 
-import { Categoria } from "../models/categorias.js";
+import { Categoria } from "../models/categoria.js";
 import { Producto } from "../models/producto.js";
 
 export const getCategoriaProductos= async (req, res) => {
   const { id } = req.params;
 
   const productos = await Producto.findAll({
-    where: { id_categoria: id },
+    where: { categoriumId: id },
   });
 
   res.json(productos);
