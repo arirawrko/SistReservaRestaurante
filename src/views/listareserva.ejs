@@ -141,7 +141,7 @@
 
                             url_get = url_get + metodo + "/" + $("#restauranId").val();
                         } else if (metodo == "fecha") {
-                            if ($("#restauranId").val() == "0") {
+                            if ($("#fecha").val() == "") {
                                 window.alert("Favor especificar fecha");
                                 return;
                             }
