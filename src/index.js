@@ -3,9 +3,7 @@
 import app from "./app.js";
 import { sequelize } from "./database/database.js";
 
-import { Restaurante } from "./models/restaurante.js";
-import { Hora } from "./models/hora.js";
-import { Cliente } from "./models/cliente.js";
+
 
 import {fileURLToPath} from 'url';
 import {dirname} from 'path';
@@ -33,33 +31,7 @@ async function main() {
     app.get('/', (req, res) => {
       res.render("index");
     });    
-
-    var restaurantes = await Restaurante.findAll();
-    var horarios = await Hora.findAll();
-    var clientes = await Cliente.findAll();
-    
-    
-
-    app.get('/reserva', (req, res) => {
-      //console.log("-->" + horarios);  
-      res.render("reserva", 
-        {
-          rows_restaurante: restaurantes, 
-          rows_hora: horarios
-        });
-     });   
-     
-     
-     app.get('/listareserva', (req, res) => {
-      //console.log("-->" + horarios);  
-      
-
-      res.render("listareserva", 
-        {
-          rows_restaurante: restaurantes, 
-          rows_cliente: clientes
-        });
-     });   
+   
 
 
   } catch (error) {
